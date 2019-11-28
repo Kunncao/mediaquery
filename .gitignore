@@ -1,5 +1,6 @@
 # Compiled class file
 *.class
+mediaquery/bin/
 
 # Log file
 *.log
@@ -23,9 +24,9 @@
 hs_err_pid*
 
 # customed folder
-query/
-database_videos/
-test/
+mediaquery/query/
+mediaquery/database_videos/
+mediaquery/test/
 
 # img and sound file
 *.rgb
