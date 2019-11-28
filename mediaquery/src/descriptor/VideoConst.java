@@ -1,0 +1,19 @@
+package descriptor;
+
+
+/**
+ * videos basic parameters
+ */
+public class VideoConst {
+	/** video resolution, width * height = 352 * 288 */
+	public static final int WIDTH = 352;
+	public static final int HEIGHT = 288;
+	/** fps: 30 */
+	public static final int FPS = 30;
+	/** query and db video path */
+	public static final String QUERY_PATH = "query/";
+	public static final String DB_PATH = "database_videos/";
+	/** total frames for each video in query and db folder (5s & 20s)*/
+	public static final int QUERY_FRAMES = 150;
+	public static final int DB_FRAMES = 600; 
+}
