@@ -1,2 +1,2 @@
-# mediaquery
- 576_final_proj_19f
+# CSCI576_Final_Proj Fa19
+Multimedia Queries
