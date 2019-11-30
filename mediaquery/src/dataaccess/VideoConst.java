@@ -1,4 +1,4 @@
-package dataaccess.descriptor;
+package dataaccess;
 
 
 /**

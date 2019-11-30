@@ -6,8 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-import dataaccess.descriptor.VideoConst;
-
 public class FrameReader {
 	private int width = VideoConst.WIDTH;
 	private int height = VideoConst.HEIGHT;
