@@ -21,33 +21,36 @@ public class FrameReader {
 	 * read image from a .rgb file in a designated path with 8-bit RGB color 
 	 */
 	public static BufferedImage readFrameImg(int width, int height, String path) throws FileNotFoundException, IOException {
-		int frameLen = width * height * 3;
-		byte[] data = getRaster(frameLen, path);
+		byte[][][] data = getMat(width, height, path);
 		return readFrameImg(width, height, data);
 	}
 	
 	/**
 	 * read image from a .rgb file in a given data stream (raster) with 8-bit RGB color
 	 */
-	public static BufferedImage readFrameImg(int width, int height, byte[] data) throws FileNotFoundException, IOException {
+	public static BufferedImage readFrameImg(int width, int height, byte[][][] data) throws FileNotFoundException, IOException {
 		BufferedImage res = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-		// image resolution
-		int offset = width * height; 
-		// set rgb value for each pixel
-		int rafInd = 0;
-		// for blue
-		int offset2 = offset * 2;
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				byte r = data[rafInd], g = data[rafInd + offset], b = data[rafInd + offset2];
+				byte r = data[y][x][0], g = data[y][x][1], b = data[y][x][2];
 				// & 0xff keep the MSB when casting from byte to int
 				int rgb = 0xff000000 | ((r & 0xff) << 16) | ((g & 0xff) << 8) | (b & 0xff);
 				res.setRGB(x, y, rgb);
-				rafInd++;
 			}
 		}
 		
 		return res;
+	}
+	
+	/**
+	 * get rgb image matrix from a raster data stream
+	 */
+	public static byte[][][] getMat(int w, int h, String path) throws FileNotFoundException, IOException {
+		int channels = 3;
+		byte[][][] mat = new byte[h][w][channels];
+		ImageProc.raster2mat(w, h, getRaster(w * h * channels, path));
+		
+		return mat;
 	}
 	
 	/**
