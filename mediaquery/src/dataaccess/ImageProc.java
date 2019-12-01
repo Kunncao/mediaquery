@@ -60,8 +60,16 @@ public class ImageProc {
 	 */
 	public static byte[][] cvt2gray(int w, int h, byte[][][] src) {
 		byte[][] dst = new byte[h][w];
+		// conversion weight for r, g, b
+		double w1 = 0.299, w2 = 0.587, w3 = 0.114;
 		
-		
+		for (int y = 0; y < h; y++) {
+			for (int x = 0; x < w; x++) {
+				// convert rgb val to gray val
+				int r = src[y][x][0] & 0xff, g = src[y][x][1] & 0xff, b = src[y][x][2] & 0xff; 
+				dst[y][x] = (byte)(w1 * r + w2 * g + w3 * b);
+			}
+		}
 		
 		return dst;
 	}
