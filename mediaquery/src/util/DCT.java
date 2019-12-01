@@ -53,7 +53,7 @@ public class DCT {
 	 * @param f input block
 	 * @return block after DCT
 	 */
-	public double[][] doDCT(int[][] f) {
+	public double[][] doDCT(byte[][] f) {
 		// block size
 		int N = f.length;
 		// F(u, v)
@@ -66,7 +66,7 @@ public class DCT {
 		for (int i = 0; i < N; i++) {
 			for (int j = 0; j < N; j++) {
 				for (int k = 0; k < N; k++) {
-					tmp[i][j] += C[i] * cos[k][i] * f[k][j];
+					tmp[i][j] += C[i] * cos[k][i] * (f[k][j] & 0xff);
 				}
 			}
 		}
