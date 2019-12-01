@@ -47,8 +47,7 @@ public class FrameReader {
 	 */
 	public static byte[][][] getMat(int w, int h, String path) throws FileNotFoundException, IOException {
 		int channels = 3;
-		byte[][][] mat = new byte[h][w][channels];
-		ImageProc.raster2mat(w, h, getRaster(w * h * channels, path));
+		byte[][][] mat = ImageProc.raster2mat(w, h, getRaster(w * h * channels, path));
 		
 		return mat;
 	}
