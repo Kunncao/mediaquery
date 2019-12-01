@@ -23,13 +23,13 @@ public class FrameReader {
 	public static BufferedImage readFrameImg(int width, int height, String path) throws FileNotFoundException, IOException {
 		int frameLen = width * height * 3;
 		byte[] data = getRaster(frameLen, path);
-		return readFrameImg(width, height, path, data);
+		return readFrameImg(width, height, data);
 	}
 	
 	/**
-	 * read image from a .rgb file in a designated path with 8-bit RGB color given data stream
+	 * read image from a .rgb file in a given data stream (raster) with 8-bit RGB color
 	 */
-	public static BufferedImage readFrameImg(int width, int height, String path, byte[] data) throws FileNotFoundException, IOException {
+	public static BufferedImage readFrameImg(int width, int height, byte[] data) throws FileNotFoundException, IOException {
 		BufferedImage res = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		// image resolution
 		int offset = width * height; 
