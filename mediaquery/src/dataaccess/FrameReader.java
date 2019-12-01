@@ -21,22 +21,18 @@ public class FrameReader {
 	 * read image from a .rgb file in a designated path with 8-bit RGB color 
 	 */
 	public static BufferedImage readFrameImg(int width, int height, String path) throws FileNotFoundException, IOException {
+		int frameLen = width * height * 3;
+		byte[] data = getRaster(frameLen, path);
+		return readFrameImg(width, height, path, data);
+	}
+	
+	/**
+	 * read image from a .rgb file in a designated path with 8-bit RGB color given data stream
+	 */
+	public static BufferedImage readFrameImg(int width, int height, String path, byte[] data) throws FileNotFoundException, IOException {
 		BufferedImage res = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-		
-		// read file
-		File imgf = new File(path);
 		// image resolution
 		int offset = width * height; 
-		// pixel value in r, g, b
-		int frameLen = offset * 3;
-		
-		RandomAccessFile raf = new RandomAccessFile(imgf, "r");
-		raf.seek(0);
-		
-		// get the raster
-		byte[] data = new byte[frameLen];
-		raf.read(data);
-		
 		// set rgb value for each pixel
 		int rafInd = 0;
 		// for blue
@@ -51,8 +47,26 @@ public class FrameReader {
 			}
 		}
 		
+		return res;
+	}
+	
+	/**
+	 * @param frameLen width * height * channels
+	 * @param path rgb file path
+	 * @return one dimension data stream
+	 */
+	public static byte[] getRaster(int frameLen, String path) throws FileNotFoundException, IOException {
+		// read file
+		File imgf = new File(path);
+		
+		RandomAccessFile raf = new RandomAccessFile(imgf, "r");
+		raf.seek(0);
+		
+		// get the raster
+		byte[] data = new byte[frameLen];
+		raf.read(data);
 		raf.close();
 		
-		return res;
+		return data;
 	}
 }
