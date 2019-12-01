@@ -1,4 +1,4 @@
-package dataaccess;
+package util;
 
 public class ImageProc {
 	/**

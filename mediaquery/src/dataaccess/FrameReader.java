@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
+import util.ImageProc;
+
 public class FrameReader {
 	private int width = VideoConst.WIDTH;
 	private int height = VideoConst.HEIGHT;
