@@ -28,9 +28,9 @@ public class ImageProc {
 	
 	/**
 	 * resize an rgb image, return 3 color's matrix  
-	 * @param oriW original width
-	 * @param w width after resizing
-	 * @param ori original raster
+	 * @param srcW original width
+	 * @param dstW width after resizing
+	 * @param src original raster
 	 */
 	public static byte[][][] resize(int srcW, int srcH, int dstW, int dstH, byte[][][] src) {
 		int channels = 3;
