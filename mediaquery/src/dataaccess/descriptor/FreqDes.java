@@ -38,7 +38,6 @@ public class FreqDes {
 			}
 		}
 		Arrays.sort(medians);
-		System.out.println(Arrays.toString(medians));
 		double median = (medians[hLen/2 - 1] + medians[hLen/2]) / 2;
 		
 		// compute hash value
