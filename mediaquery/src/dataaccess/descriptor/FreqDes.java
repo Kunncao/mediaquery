@@ -36,7 +36,7 @@ public class FreqDes {
 			medians[i] = afterDCT[y][x]; 
 		}
 		Arrays.sort(medians);
-		double median = (medians[31] + medians[32]) / 2;
+		double median = (medians[hLen/2 - 1] + medians[hLen/2]) / 2;
 		
 		// compute hash value
 		for (int y = 0; y < s; y++) {
