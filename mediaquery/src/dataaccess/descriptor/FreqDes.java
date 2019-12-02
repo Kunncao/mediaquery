@@ -61,7 +61,7 @@ public class FreqDes {
 			if (h1Arr[i] == h2Arr[i]) sameBits++;
 		}
 		
-		double sim = Math.round(sameBits * 10000.0 / len) / 10000.0;
+		double sim = Math.round(sameBits * 1000.0 / len) / 1000.0;
 		return sim;
 	}
 }
