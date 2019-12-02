@@ -1,6 +1,6 @@
 package dataaccess.descriptor;
 
-public class ColorDescriptor {
+public class ColorDes {
 	/**
 	 * compute the Euclidean distance of two given points
 	 */
