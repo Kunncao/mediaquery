@@ -32,10 +32,13 @@ public class FreqDes {
 		double[] medians = new double[hLen];
 		int i = 0;
 		for (int y = 0; y < s; y++) {
-			for (int x = 0; x < s; x++)
-			medians[i] = afterDCT[y][x]; 
+			for (int x = 0; x < s; x++) {
+				medians[i] = afterDCT[y][x];
+				i++;
+			}
 		}
 		Arrays.sort(medians);
+		System.out.println(Arrays.toString(medians));
 		double median = (medians[hLen/2 - 1] + medians[hLen/2]) / 2;
 		
 		// compute hash value
