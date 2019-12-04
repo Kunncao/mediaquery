@@ -1,6 +1,9 @@
 package dataaccess.descriptor;
 
+import java.awt.Color;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -13,6 +16,36 @@ public class ColorDes {
 	public ColorDes(int k) {
 		this.k = k;
 	}
+	
+	/**
+	 * get main color and corresponding weight for given k
+	 */
+	public Map<Color, Double> getMains(Mat frame) {
+		return getMains(frame, k);
+	}
+	
+	/**
+	 * get main color and corresponding weight
+	 */
+	public static Map<Color, Double> getMains(Mat frame, int k) {
+		Map<Color, Double> res = new HashMap<Color, Double>(); 
+		// get labels and main colors
+		Mat[] m = getMainColors(frame, k);
+		Mat labels = m[0], centroids = m[1];
+		double[] wts = getWeights(labels, k); 
+		
+		// separate main color
+		for (int i = 0; i < k; i++) {
+			int b = (int) centroids.get(i, 0)[0], 
+				g = (int) centroids.get(i, 1)[0], 
+				r = (int) centroids.get(i, 2)[0];
+			Color c = new Color(r, g, b);
+			res.put(c, wts[i]);
+		}
+		
+		return res;
+	}
+	
 	
 	/**
 	 * get main colors weights
