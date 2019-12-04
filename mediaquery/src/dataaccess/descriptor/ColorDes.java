@@ -1,5 +1,7 @@
 package dataaccess.descriptor;
 
+import java.util.Arrays;
+
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -10,6 +12,33 @@ public class ColorDes {
 	
 	public ColorDes(int k) {
 		this.k = k;
+	}
+	
+	/**
+	 * get main colors weights
+	 * @param labels k means return result, 1 dim, 1 cn
+	 * @param k k centroids
+	 */
+	public static double[] getWeights(Mat labels, int k) {
+		double[] wts = new double[k];
+		int[] cnts = new int[k];
+		// total pixel number
+		int total = labels.rows();
+		
+		// each cluster's number
+		for (int i = 0; i < total; i++) {
+			// label #
+			int l = (int) labels.get(i, 0)[0];
+			cnts[l]++;
+		}
+		// TODO: test
+		System.out.println(Arrays.toString(cnts));
+		// compute weights
+		for (int i = 0; i < k; i++) {
+			wts[i] = cnts[i] * 1.0 / total;
+		}
+		
+		return wts;
 	}
 	
 	/**
