@@ -1,7 +1,6 @@
 package dataaccess.descriptor;
 
 import java.awt.Color;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,8 +63,6 @@ public class ColorDes {
 			int l = (int) labels.get(i, 0)[0];
 			cnts[l]++;
 		}
-		// TODO: test
-		System.out.println(Arrays.toString(cnts));
 		// compute weights
 		for (int i = 0; i < k; i++) {
 			wts[i] = cnts[i] * 1.0 / total;
@@ -88,13 +85,13 @@ public class ColorDes {
 	public static Mat[] getMainColors(Mat frame, int k) {
 		// convert the mat to one dimesion raster
 		Mat ras = frame.reshape(1, frame.cols() * frame.rows());
-		// TODO: remove 1.0 / 255
+		// to fit kmeans require
 		ras.convertTo(ras, CvType.CV_32F);
 		
 		// record each pixel's labels and each label's corresponding color
 		Mat labels = new Mat(), centroids = new Mat();
 		// set max iterations = 100, COUNT + EPS
-		TermCriteria criteria = new TermCriteria(TermCriteria.COUNT + TermCriteria.EPS, 100, 1);
+		TermCriteria criteria = new TermCriteria(TermCriteria.COUNT, 100, 1);
 		// do K means clustering
 		Core.kmeans(ras, k, labels, criteria, 1, Core.KMEANS_PP_CENTERS, centroids);
 		
