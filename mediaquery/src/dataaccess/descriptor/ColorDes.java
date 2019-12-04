@@ -1,41 +1,48 @@
 package dataaccess.descriptor;
 
-import java.awt.Color;
+import org.opencv.core.Core;
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+import org.opencv.core.TermCriteria;
 
 public class ColorDes {
-	// 6 hue sections degrees (ending degrees)
-	public static final double RED = 20.0 / 360;
-	public static final double YELLOW = 80.0 / 360;
-	public static final double GREEN = 140.0 / 360;
-	public static final double CYAN = 200.0 / 360;
-	public static final double BLUE = 260.0 / 360;
-	public static final double MAGNT = 320.0 / 360;
+	private int k;
+	
+	public ColorDes(int k) {
+		this.k = k;
+	}
 	
 	/**
-	 * get hue distribution of a frame
-	 * @param src an rgb matrix (h * w * each channel)
+	 * get main colors with given k by k means clustering 
+	 * @return a mat matrix {labels, centroids}
 	 */
-	public static int[] getHueDistr(byte[][][] src) {
-		// divide hue into 6 section, count each section's pixel numbers
-		int[] distr = new int[6];
-		int h = src.length, w = src[0].length;
-				
-		for (int y = 0; y < h; y++) {
-			for (int x = 0; x < w; x++) {
-				// convert rgb to hsb 
-				int r = src[y][x][0] & 0xff, g = src[y][x][1] & 0xff, b = src[y][x][2] & 0xff;
-				float hsbVals[] = Color.RGBtoHSB(r, g, b, null);
-				// count number
-				float hue = hsbVals[0];
-				if (hue <= RED || hue > MAGNT) distr[0]++;
-				else if (hue <= YELLOW) distr[1]++;
-				else if (YELLOW < hue && hue <= GREEN) distr[2]++;
-				else if (hue <= CYAN) distr[3]++;
-				else if (hue <= BLUE) distr[4]++;
-				else distr[5]++;
-			}
-		}
-		
-		return distr;
+	public Mat[] getMainColors(Mat frame) {
+		return getMainColors(frame, k);
 	}
+	
+	/**
+	 * get k main colors of a frame by k means clustering
+	 */
+	public static Mat[] getMainColors(Mat frame, int k) {
+		// convert the mat to one dimesion raster
+		Mat ras = frame.reshape(1, frame.cols() * frame.rows());
+		// TODO: remove 1.0 / 255
+		ras.convertTo(ras, CvType.CV_32F);
+		
+		// record each pixel's labels and each label's corresponding color
+		Mat labels = new Mat(), centroids = new Mat();
+		// TODO:set max iterations = 100, COUNT + EPS
+		TermCriteria criteria = new TermCriteria(TermCriteria.COUNT + TermCriteria.EPS, 100, 1);
+		// do K means clustering
+		Core.kmeans(ras, k, labels, criteria, 1, Core.KMEANS_PP_CENTERS, centroids);
+		
+		// convert centroids
+		// TODO: why 1 channel and reshape
+		centroids.convertTo(centroids, CvType.CV_8UC1);
+		centroids.reshape(3);
+		
+		return new Mat[] {labels, centroids};
+	}
+	
+	
 }
