@@ -1,6 +1,27 @@
 package util;
 
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+
 public class ImageProc {
+	/** 
+	 * rgb byte multi-dim array to opencv mat
+	 */
+	public static Mat rgb2mat(byte[][][] rgb) {
+		int h = rgb.length, w = rgb[0].length;
+		// RGB to opencv.core.Mat BGR
+		Mat m = new Mat(h, w, CvType.CV_8UC3);
+		
+		for (int y = 0; y < h; y++) {
+			for (int x = 0; x < w; x++) {
+				byte r = rgb[y][x][0], g = rgb[y][x][1], b = rgb[y][x][2];
+				m.put(y, x, new byte[] {b, g, r});
+			}
+		}
+		
+		return m;
+	}
+	
 	/**
 	 * a one dimension rgb raster to 2 dims matrix for r, g, b (0, 1, 2)
 	 */
