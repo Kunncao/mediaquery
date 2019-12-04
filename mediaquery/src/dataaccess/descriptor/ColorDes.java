@@ -31,15 +31,13 @@ public class ColorDes {
 		
 		// record each pixel's labels and each label's corresponding color
 		Mat labels = new Mat(), centroids = new Mat();
-		// TODO:set max iterations = 100, COUNT + EPS
+		// set max iterations = 100, COUNT + EPS
 		TermCriteria criteria = new TermCriteria(TermCriteria.COUNT + TermCriteria.EPS, 100, 1);
 		// do K means clustering
 		Core.kmeans(ras, k, labels, criteria, 1, Core.KMEANS_PP_CENTERS, centroids);
 		
-		// convert centroids
-		// TODO: why 1 channel and reshape
+		// convert centroids to byte
 		centroids.convertTo(centroids, CvType.CV_8UC1);
-		centroids.reshape(3);
 		
 		return new Mat[] {labels, centroids};
 	}
