@@ -10,8 +10,12 @@ import org.opencv.core.Mat;
 import org.opencv.core.TermCriteria;
 
 public class ColorDes {
+	/** k centers */
 	private int k;
 	
+	/**
+	 * @param k the number of centroids
+	 */
 	public ColorDes(int k) {
 		this.k = k;
 	}
