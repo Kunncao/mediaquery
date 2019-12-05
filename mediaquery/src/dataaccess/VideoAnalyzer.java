@@ -33,14 +33,14 @@ public class VideoAnalyzer {
 	/**
 	 * read all the frame under given path and analysis
 	 */
-	public Video readAnalyseVideo(String path, int step, int k) throws FileNotFoundException, IOException {
-		return readAnalyseVideo(width, height, path, step, k);
+	public Video analyseVideo(String path, int step, int k) throws FileNotFoundException, IOException {
+		return analyseVideo(width, height, path, step, k);
 	}
 	
 	/**
 	 * read all the frame under given path and analysis
 	 */
-	public static Video readAnalyseVideo(int w, int h, String path, int step, int k) throws FileNotFoundException, IOException {
+	public static Video analyseVideo(int w, int h, String path, int step, int k) throws FileNotFoundException, IOException {
 		// read
 		String[] fNames = getFNames(path);
 		Video v = new Video(path, fNames.length, step, w, h);
