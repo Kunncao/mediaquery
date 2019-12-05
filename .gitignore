@@ -1,6 +1,7 @@
 # Compiled class file
 *.class
 mediaquery/bin/
+mediaquery/target/
 
 # Log file
 *.log
