@@ -96,7 +96,7 @@ public class ColorComp {
 		int r1 = c1.getRed(), r2 = c2.getRed(), 
 			g1 = c1.getGreen(), g2 =c2.getGreen(), 
 			b1 = c1.getBlue(), b2 = c2.getBlue();
-		int threshold = 50;
+		int threshold = 60;
   
 		double rBar = (r1 + r2) / 2.0;
 		// differece of r, g, b
