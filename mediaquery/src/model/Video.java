@@ -43,8 +43,12 @@ public class Video {
 	}
 	
 	public String getName() {
+		 return getName(path);
+	}
+	
+	public static String getName(String path) {
 		int i = path.lastIndexOf("/");
-		return path.substring(i + 1); 
+		return path.substring(i + 1);
 	}
 	
 	/** how many frame have been read */
