@@ -33,18 +33,18 @@ public class VideoAnalyzer {
 	/**
 	 * read all the frame under given path and analysis
 	 */
-	public Video readAnalyseVideo(String path, int k) throws FileNotFoundException, IOException {
-		return readAnalyseVideo(width, height, path, k);
+	public Video readAnalyseVideo(String path, int step, int k) throws FileNotFoundException, IOException {
+		return readAnalyseVideo(width, height, path, step, k);
 	}
 	
 	/**
 	 * read all the frame under given path and analysis
 	 */
-	public static Video readAnalyseVideo(int w, int h, String path, int k) throws FileNotFoundException, IOException {
+	public static Video readAnalyseVideo(int w, int h, String path, int step, int k) throws FileNotFoundException, IOException {
 		// read
 		String[] fNames = getFNames(path);
-		Video v = new Video(path, fNames.length, w, h);
-		byte[][][][] frames = readFrames(w, h, fNames);
+		Video v = new Video(path, fNames.length, step, w, h);
+		byte[][][][] frames = readFrames(w, h, step, fNames);
 		
 		// analyse
 		// color and freq
@@ -67,11 +67,12 @@ public class VideoAnalyzer {
 	/**
 	 * read all the frame under given path, store then as a rgb matrix with 3 dims (h * w * (r, g, b))
 	 */
-	public static byte[][][][] readFrames(int w, int h, String[] fNames) throws FileNotFoundException, IOException {
-		byte[][][][] frames = new byte[fNames.length][][][];
+	public static byte[][][][] readFrames(int w, int h, int step, String[] fNames) throws FileNotFoundException, IOException {
+		int len = fNames.length / step;
+		byte[][][][] frames = new byte[len][][][];
 		
-		for (int i = 0; i < fNames.length; i++) {
-			frames[i] = FrameReader.getMat(w, h, fNames[i]);
+		for (int i = 0; i < len; i++) {
+			frames[i] = FrameReader.getMat(w, h, fNames[i * step]);
 		}
 		
 		return frames;
