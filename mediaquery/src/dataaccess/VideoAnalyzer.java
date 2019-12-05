@@ -42,14 +42,14 @@ public class VideoAnalyzer {
 	 */
 	public static Video analyseVideo(int w, int h, String path, int step, int k) throws FileNotFoundException, IOException {
 		// read
-		String[] fNames = getFNames(path);
-		Video v = new Video(path, fNames.length, step, w, h);
-		byte[][][][] frames = readFrames(w, h, step, fNames);
+		String[] fPaths = getFPath(path);
+		Video v = new Video(path, fPaths.length, step, w, h);
+		byte[][][][] frames = readFrames(w, h, step, fPaths);
 		
 		// analyse
 		// color and freq
 		List<Map<Color, Double>> mainColors = new ArrayList<>();
-		String[] fingerprint = new String[fNames.length];
+		String[] fingerprint = new String[fPaths.length];
 		for (int i = 0; i < frames.length; i++) {
 			Mat mat = ImageProc.rgb2mat(frames[i]);
 			// color
@@ -81,7 +81,7 @@ public class VideoAnalyzer {
 	/**
 	 * get all rgb files under given path
 	 */
-	public static String[] getFNames(String path) throws FileNotFoundException {
+	public static String[] getFPath(String path) throws FileNotFoundException {
 		if (!path.endsWith("/")) path += "/";
 		File f = new File(path);
 		if (!f.exists()) {
