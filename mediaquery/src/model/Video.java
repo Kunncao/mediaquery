@@ -42,6 +42,11 @@ public class Video {
 		return path;
 	}
 	
+	public String getName() {
+		int i = path.lastIndexOf("/");
+		return path.substring(i + 1); 
+	}
+	
 	/** how many frame have been read */
 	public int length() {
 		return mainColors.size();
