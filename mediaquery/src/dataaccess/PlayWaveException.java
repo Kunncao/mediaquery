@@ -3,6 +3,7 @@ package dataaccess;
 /**
  * @author Giulio
  */
+@SuppressWarnings("serial")
 public class PlayWaveException extends Exception {
 
     public PlayWaveException(String message) {
