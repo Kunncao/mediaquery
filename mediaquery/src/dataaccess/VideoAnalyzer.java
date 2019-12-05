@@ -85,7 +85,7 @@ public class VideoAnalyzer {
 		if (!path.endsWith("/")) path += "/";
 		File f = new File(path);
 		if (!f.exists()) {
-			throw new FileNotFoundException();
+			throw new FileNotFoundException(path);
 		}
 		
 		// get all frame's name
