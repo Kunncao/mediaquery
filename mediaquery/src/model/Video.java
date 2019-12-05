@@ -11,7 +11,7 @@ public class Video {
 	/** total frames */
 	private int length;
 	/** 64 chars frequence feature for each read frame */
-	private String[] fingerprint;
+	private List<String> fingerprint;
 	private List<Map<Color, Double>> mainColors;
 	private int width = VideoConst.WIDTH, height = VideoConst.HEIGHT;
 	/** reading step */
@@ -25,6 +25,7 @@ public class Video {
 	public Video(String path, int length, int step, int w, int h) {
 		this.path = path;
 		this.length = length;
+		this.step = step;
 		width = w;
 		height = h;
 	}
@@ -61,11 +62,11 @@ public class Video {
 		return length;
 	}
 	
-	public void setFingerprint(String[] fingerprint) {
+	public void setFingerprint(List<String> fingerprint) {
 		this.fingerprint = fingerprint;
 	}
 	
-	public String[] getFingerprint() {
+	public List<String> getFingerprint() {
 		return fingerprint;
 	}
 
