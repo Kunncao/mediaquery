@@ -2,6 +2,7 @@
 *.class
 mediaquery/bin/
 mediaquery/target/
+mediaquery/cache/
 
 # Log file
 *.log
