@@ -10,17 +10,19 @@ public class Video {
 	private String path;
 	/** total frames */
 	private int length;
-	/** 64 chars frequence feature for each frame */
+	/** 64 chars frequence feature for each read frame */
 	private String[] fingerprint;
 	private List<Map<Color, Double>> mainColors;
 	private int width = VideoConst.WIDTH, height = VideoConst.HEIGHT;
+	/** reading step */
+	private int step;
 	
-	public Video(String path, int length) {
+	public Video(String path, int length, int step) {
 		this.path = path;
 		this.length = length;
 	}
 	
-	public Video(String path, int length, int w, int h) {
+	public Video(String path, int length, int step, int w, int h) {
 		this.path = path;
 		this.length = length;
 		width = w;
@@ -40,7 +42,13 @@ public class Video {
 		return path;
 	}
 	
+	/** how many frame have been read */
 	public int length() {
+		return mainColors.size();
+	}
+	
+	/** total number of frame */
+	public int totalLen() {
 		return length;
 	}
 	
@@ -58,6 +66,10 @@ public class Video {
 
 	public int getHeight() {
 		return height;
+	}
+
+	public int getStep() {
+		return step;
 	}
 	
 	
