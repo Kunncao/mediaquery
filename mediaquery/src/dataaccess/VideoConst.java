@@ -13,6 +13,8 @@ public class VideoConst {
 	/** query and db video path */
 	public static final String QUERY_PATH = "query/";
 	public static final String DB_PATH = "database_videos/";
+	/** cache path*/
+	public static final String CACHE_PATH = "cache/"; 
 	/** total frames for each video in query and db folder (5s & 20s)*/
 	public static final int QUERY_FRAMES = 150;
 	public static final int DB_FRAMES = 600; 
