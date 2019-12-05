@@ -3,6 +3,8 @@ package model;
 import java.awt.Color;
 import java.util.Map;
 
+import dataaccess.VideoConst;
+
 public class Video {
 	private String path;
 	/** total frames */
@@ -10,10 +12,18 @@ public class Video {
 	/** 64 chars frequence feature for each frame */
 	private String[] fingerprint;
 	private Map<Color, Double>[] mainColors;
+	private int width = VideoConst.WIDTH, height = VideoConst.HEIGHT;
 	
 	public Video(String path, int length) {
 		this.path = path;
 		this.length = length;
+	}
+	
+	public Video(String path, int length, int w, int h) {
+		this.path = path;
+		this.length = length;
+		width = w;
+		height = h;
 	}
 	
 	public Map<Color, Double>[] getMainColors() {
@@ -38,6 +48,14 @@ public class Video {
 	
 	public String[] getFingerprint() {
 		return fingerprint;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
 	}
 	
 	
