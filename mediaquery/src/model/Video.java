@@ -1,6 +1,7 @@
 package model;
 
 import java.awt.Color;
+import java.util.List;
 import java.util.Map;
 
 import dataaccess.VideoConst;
@@ -11,7 +12,7 @@ public class Video {
 	private int length;
 	/** 64 chars frequence feature for each frame */
 	private String[] fingerprint;
-	private Map<Color, Double>[] mainColors;
+	private List<Map<Color, Double>> mainColors;
 	private int width = VideoConst.WIDTH, height = VideoConst.HEIGHT;
 	
 	public Video(String path, int length) {
@@ -26,14 +27,15 @@ public class Video {
 		height = h;
 	}
 	
-	public Map<Color, Double>[] getMainColors() {
+	
+	public List<Map<Color, Double>> getMainColors() {
 		return mainColors;
 	}
-	
-	public void setMainColors(Map<Color, Double>[] mainColors) {
+
+	public void setMainColors(List<Map<Color, Double>> mainColors) {
 		this.mainColors = mainColors;
 	}
-	
+
 	public String getPath() {
 		return path;
 	}
