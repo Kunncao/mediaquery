@@ -1,11 +1,52 @@
 package comparator;
 
 import java.awt.Color;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import model.Video;
+
 public class ColorComp {
+	/**
+	 * compare two videos
+	 * @return similarity
+	 */
+	public static double compare(Video v1, Video v2) {
+		double sim = 0;
+		// query video, db video
+		Video q, db;
+		// query video total frames, db video total frames
+		int qLen, dbLen;
+		// select short one as query video
+		if (v1.length() < v2.length()) {
+			q = v1; 
+			db = v2;
+			qLen = v1.length();
+			dbLen = v2.length();
+		} else {
+			q = v2;
+			db = v1;
+			qLen = v2.length();
+			dbLen = v1.length();
+		}
+		List<Map<Color, Double>> qColors = q.getMainColors(), dbColors = db.getMainColors();
+		
+		// regard query clip as a window matching from 1st frame of db video, return the max sim
+		int moves = dbLen - qLen;
+		for (int i = 0; i <= moves; i++) {
+			// current similarity
+			double curr = 0;
+			for (int j = 0; j < qLen; j++) {
+				curr += frameCompare(qColors.get(j), dbColors.get(i + j)) / qLen;
+			}
+			sim = Math.max(curr, sim);
+		}
+		
+		return sim;
+	}
+	
 	/**
 	 * compare two frames color 
 	 * map is used to store the main colors and corresponding weights
