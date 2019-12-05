@@ -12,6 +12,15 @@ public class FrameReader {
 	private int width = VideoConst.WIDTH;
 	private int height = VideoConst.HEIGHT;
 	
+	public FrameReader() {
+		
+	}
+	
+	public FrameReader(int w, int h) {
+		width = w;
+		height = h;
+	}
+	
 	/**
 	 * read image from a .rgb file in a designated resolution(352 * 288)
 	 */
@@ -42,6 +51,13 @@ public class FrameReader {
 		}
 		
 		return res;
+	}
+	
+	/**
+	 * get rgb image matrix from a raster data stream with given w, h
+	 */
+	public byte[][][] getMat(String path) throws FileNotFoundException, IOException {
+		return getMat(width, height, path);
 	}
 	
 	/**
