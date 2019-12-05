@@ -62,8 +62,6 @@ public class ColorComp {
 		int dR = r1 - r2, dG = g1 - g2, dB = b1 - b2;
 		double dC = Math.sqrt((2 + rBar / 256.0) * dR * dR + 4 * dG * dG + 
 				(2 + (255 - rBar) / 256.0) * dB * dB);
-		// TODO: test 
-		System.out.println("DC: " + dC);
 		if (dC < threshold) return true;
 		return false;
 	}
