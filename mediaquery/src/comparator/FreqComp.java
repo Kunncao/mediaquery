@@ -6,6 +6,8 @@ import dataaccess.descriptor.FreqDes;
 import model.Video;
 
 public class FreqComp {
+	public static final double THRESHOLD = 0.7;
+	
 	public static double compare(Video qV, Video dbV) {
 		double sim = 0;
 		// compare fingerprint
@@ -25,12 +27,14 @@ public class FreqComp {
 			sim = Math.max(curr, sim);
 		}
 		
+		// if the whole similarity is lower the threshold, then return 0
+		if (sim < THRESHOLD) sim = 0;
+		
 		return sim;
 	}
 	
 	public static boolean isSim(String fp1, String fp2) {
-		double threshold = 0.55;
-		if (FreqDes.similarity(fp1, fp2) > threshold) return true;
+		if (FreqDes.similarity(fp1, fp2) > THRESHOLD) return true;
 		else return false;
 	}
 }
