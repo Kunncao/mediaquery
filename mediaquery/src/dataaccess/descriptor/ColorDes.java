@@ -43,7 +43,8 @@ public class ColorDes {
 				g = (int) centroids.get(i, 1)[0], 
 				r = (int) centroids.get(i, 2)[0];
 			Color c = new Color(r, g, b);
-			res.put(c, wts[i]);
+			// when two centroids overlap (e.g. no enough color) 
+			res.put(c, res.getOrDefault(c, 0.0) + wts[i]);
 		}
 		
 		return res;
