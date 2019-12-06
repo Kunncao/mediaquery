@@ -98,8 +98,24 @@ public class SearchEngine {
 		// compare
 		for (int i = 0; i < dbs.length; i++) {
 			// compare color
-			double sim = ColorComp.compare(query, dbs[i]);
+			double cSim = ColorComp.compare(query, dbs[i]);
 			// TODO: compare others
+			// compare frequency
+			double fSim = FreqComp.compare(query, dbs[i]);
+			
+			// TODO: given specific portion
+			// total sim
+			double sim = 0;
+			// proportion
+			double cpp = 0, fpp = 0;
+			if (fSim == 0) {
+				cpp = 1;
+			} else {
+				cpp = 0.7;
+				fpp = 0.3;
+			}
+			// compute weighted sim
+			sim = cpp * cSim + fpp * fSim;
 			
 			RankInfo ri = new RankInfo(dbs[i].getPath(), sim);
 			q.offer(ri);
