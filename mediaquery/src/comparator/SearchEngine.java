@@ -97,7 +97,10 @@ public class SearchEngine {
 		
 		// compare
 		for (int i = 0; i < dbs.length; i++) {
+			// compare color
 			double sim = ColorComp.compare(query, dbs[i]);
+			// TODO: compare others
+			
 			RankInfo ri = new RankInfo(dbs[i].getPath(), sim);
 			q.offer(ri);
 		}
