@@ -96,7 +96,7 @@ public class ColorDes {
 		// record each pixel's labels and each label's corresponding color
 		Mat labels = new Mat(), centroids = new Mat();
 		// set max iterations = 100, COUNT + EPS
-		TermCriteria criteria = new TermCriteria(TermCriteria.COUNT, 100, 1);
+		TermCriteria criteria = new TermCriteria(TermCriteria.MAX_ITER + TermCriteria.EPS, 100, 1.0);
 		// do K means clustering
 		Core.kmeans(ras, k, labels, criteria, 1, Core.KMEANS_PP_CENTERS, centroids);
 		
