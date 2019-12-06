@@ -18,4 +18,8 @@ public class VideoConst {
 	/** total frames for each video in query and db folder (5s & 20s)*/
 	public static final int QUERY_FRAMES = 150;
 	public static final int DB_FRAMES = 600; 
+	/** frame read step */
+	public static final int STEP = 10;
+	/** k means */
+	public static final int k = 6;
 }
