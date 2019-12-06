@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.util.List;
 import java.util.Map;
 
-import dataaccess.VideoConst;
+import util.VideoConst;
 
 public class Video {
 	private String path;

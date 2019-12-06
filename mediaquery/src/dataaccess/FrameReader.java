@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 import util.ImageProc;
+import util.VideoConst;
 
 public class FrameReader {
 	private int width = VideoConst.WIDTH;

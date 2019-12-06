@@ -9,16 +9,16 @@ import java.util.Queue;
 import org.json.simple.parser.ParseException;
 
 import dataaccess.VideoAnalyzer;
-import dataaccess.VideoConst;
 import model.Video;
 import util.Cache;
+import util.VideoConst;
 
 public class SearchEngine {
 	private String dbPath;
 	// all videos path in db folder
 	private String[] dbVideos;
-	private int step = 10;
-	private int k = 6;
+	private int step = VideoConst.STEP;
+	private int k = VideoConst.K;
 	
 	public class RankInfo implements Comparable<RankInfo>{
 		String videoPath;

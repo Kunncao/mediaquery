@@ -16,6 +16,7 @@ import dataaccess.descriptor.ColorDes;
 import dataaccess.descriptor.FreqDes;
 import model.Video;
 import util.ImageProc;
+import util.VideoConst;
 
 public class VideoAnalyzer {
 	private int width = VideoConst.WIDTH;
