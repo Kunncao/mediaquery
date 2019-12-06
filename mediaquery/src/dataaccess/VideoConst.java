@@ -21,5 +21,5 @@ public class VideoConst {
 	/** frame read step */
 	public static final int STEP = 10;
 	/** k means */
-	public static final int k = 6;
+	public static final int K = 6;
 }
