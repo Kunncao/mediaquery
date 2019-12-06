@@ -63,7 +63,7 @@ public class FreqDes {
 			if (h1Arr[i] == h2Arr[i]) sameBits++;
 		}
 		
-		double sim = sameBits / len;
+		double sim = sameBits * 1.0 / len;
 		return sim;
 	}
 }
