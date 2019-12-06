@@ -48,6 +48,7 @@ public class Video {
 	}
 	
 	public static String getName(String path) {
+		if (path.endsWith("/")) path = path.substring(0, path.length() - 1);
 		int i = path.lastIndexOf("/");
 		return path.substring(i + 1);
 	}
