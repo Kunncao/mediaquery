@@ -6,22 +6,19 @@ import java.io.IOException;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+import org.json.simple.parser.ParseException;
+
 import dataaccess.VideoAnalyzer;
+import dataaccess.VideoConst;
 import model.Video;
+import util.Cache;
 
 public class SearchEngine {
 	private String dbPath;
 	// all videos path in db folder
 	private String[] dbVideos;
-	
-	/**
-	 * @param db all db videos folder
-	 */
-	public SearchEngine(String dbPath) {
-		if (!dbPath.endsWith("/")) dbPath += "/";
-		this.dbPath = dbPath;
-		dbVideos = getDBVideos();
-	}
+	private int step = 10;
+	private int k = 6;
 	
 	public class RankInfo implements Comparable<RankInfo>{
 		String videoPath;
@@ -44,22 +41,58 @@ public class SearchEngine {
 	}
 	
 	/**
+	 * @param dbPath all db videos folder
+	 */
+	public SearchEngine(String dbPath) {
+		if (!dbPath.endsWith("/")) dbPath += "/";
+		this.dbPath = dbPath;
+		dbVideos = getDBVideos();
+	}
+	
+	/**
+	 * @param dbPath all db videos folder
+	 * @param step frame read step
+	 * @param k the num of main colors extracted from each frame
+	 */
+	public SearchEngine(String dbPath, int step, int k) {
+		this(dbPath);
+		this.step = step;
+		this.k = k;
+	}
+	
+	
+	/**
+	 * @return a arrays contains {path, similarity} with desc order
+	 * @throws ParseException 
+	 */
+	public String[][] search(String queryFolder) throws FileNotFoundException, IOException, ParseException {
+		return search(queryFolder, step, k);
+	}
+	
+	/**
 	 * @param step frame read step
 	 * @param k the num of main colors extracted from each frame
 	 * @return a arrays contains {path, similarity} with desc order
 	 */
-	public String[][] search(String queryFolder, int step, int k) throws FileNotFoundException, IOException {
+	public String[][] search(String queryFolder, int step, int k) throws FileNotFoundException, IOException, ParseException {
 		Queue<RankInfo> q = new PriorityQueue<>();
 		
 		// analyse all videos
 		VideoAnalyzer va = new VideoAnalyzer();
 		Video query = va.analyseVideo(queryFolder, step, k);
-		// TODO: cache db videos
 		
 		Video[] dbs = new Video[dbVideos.length];
 		for (int i = 0; i < dbVideos.length; i++) {
 			String path = dbPath + dbVideos[i];
-			dbs[i] = va.analyseVideo(path, step, k);
+			
+			// cache video
+			File f = new File(VideoConst.CACHE_PATH + dbVideos[i] + ".json");
+			if (f.exists()) {
+				dbs[i] = Cache.readCache(f.getPath());
+			} else {
+				dbs[i] = va.analyseVideo(path, step, k);
+				Cache.cacheVideo(dbs[i]);
+			}
 		}
 		
 		// compare
