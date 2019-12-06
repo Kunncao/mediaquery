@@ -50,10 +50,11 @@ public class VideoAnalyzer {
 		// color and freq
 		List<Map<Color, Double>> mainColors = new ArrayList<>();
 		List<String> fingerprint = new ArrayList<String>();
+		ColorDes cd = new ColorDes(k);
 		for (int i = 0; i < frames.length; i++) {
 			Mat mat = ImageProc.rgb2mat(frames[i]);
 			// color
-			mainColors.add(ColorDes.getMains(mat, k));
+			mainColors.add(cd.getMains(mat));
 			// freq
 			fingerprint.add(FreqDes.pHash(frames[i]));
 		}
