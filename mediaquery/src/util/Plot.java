@@ -7,6 +7,8 @@ import dataaccess.FrameReader;
 
 public class Plot {
 	private static final int RANGE_H = 100;
+	// empty 20px at the top for each plot
+	private static final int EMPTY_SPC = 20;
 	
 	/**
 	 * draw a plot with given similarity array
@@ -14,7 +16,7 @@ public class Plot {
 	 * @return plot histogram image
 	 */
 	public static BufferedImage draw(double[] sim) {
-		int w = sim.length, h = RANGE_H;
+		int w = sim.length, h = RANGE_H + EMPTY_SPC;
 		return draw(sim, w, h);
 	}
 	
@@ -50,7 +52,7 @@ public class Plot {
 	 */
 	public static byte[][][] formMat(double[] sim) {
 		int h = RANGE_H, w = sim.length;
-		byte[][][] mat = new byte[h][w][3];
+		byte[][][] mat = new byte[h + EMPTY_SPC][w][3];
 		
 		// x axis
 		for (int x = 0; x < w; x++) {
@@ -58,11 +60,13 @@ public class Plot {
 				// y axis, oY starts from 1 to 100
 				int oY = h - y;
 				if (oY <= sim[x] * 100) {
+					// real y location
+					int ry = y + EMPTY_SPC;
 					// fill the pixel with red
-					mat[y][x][0] = (byte) 0xff;
+					mat[ry][x][0] = (byte) 0xff;
 					// others set 0
-					mat[y][x][1] = 0;
-					mat[y][x][2] = 0;
+					mat[ry][x][1] = 0;
+					mat[ry][x][2] = 0;
 				}
 			}
 		}
