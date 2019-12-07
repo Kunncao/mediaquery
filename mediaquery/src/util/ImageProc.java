@@ -77,6 +77,29 @@ public class ImageProc {
 	}
 	
 	/**
+	 * resize an single channel image, return a matrix  
+	 * @param srcW original width
+	 * @param dstW width after resizing
+	 * @param src original raster
+	 */
+	public static byte[][] resize(int srcW, int srcH, int dstW, int dstH, byte[][] src) {
+		byte[][] dst = new byte[dstH][dstW];
+		// ratio of width and height
+		double rW = srcW * 1.0 / dstW,  rH = srcH * 1.0 / dstH;
+		
+		// resize
+		for (int y = 0; y < dstH; y++) {
+			for (int x = 0; x < dstW; x++) {
+				// corresponding x,y in the src
+				int srcX = (int)(x * rW), srcY = (int)(y * rH);
+				dst[y][x] = src[srcY][srcX];
+			}
+		}
+		
+		return dst;
+	}
+	
+	/**
 	 * convert rgb raster data to gray data
 	 */
 	public static byte[][] cvt2gray(int w, int h, byte[][][] src) {
