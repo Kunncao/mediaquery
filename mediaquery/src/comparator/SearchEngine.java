@@ -1,8 +1,11 @@
 package comparator;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -11,14 +14,17 @@ import org.json.simple.parser.ParseException;
 import dataaccess.VideoAnalyzer;
 import model.Video;
 import util.Cache;
+import util.Plot;
 import util.VideoConst;
 
 public class SearchEngine {
 	private String dbPath;
-	// all videos path in db folder
+	// all videos name(folder) in db folder
 	private String[] dbVideos;
 	private int step = VideoConst.STEP;
 	private int k = VideoConst.K;
+	private int plotWidth, plotHeight;
+	private Map<String, BufferedImage> plots = new HashMap<String, BufferedImage>();
 	
 	public class RankInfo implements Comparable<RankInfo>{
 		String videoPath;
@@ -95,10 +101,12 @@ public class SearchEngine {
 			}
 		}
 		
-		// compare
+		// compare query video with all db videos
 		for (int i = 0; i < dbs.length; i++) {
 			// compare color
-			double cSim = ColorComp.compare(query, dbs[i]);
+			int len = Math.abs(query.length() - dbs[i].length()) + 1;
+			double[] cSimData = new double[len];
+			double cSim = ColorComp.compare(query, dbs[i], cSimData);
 			// TODO: compare others
 			// compare frequency
 			double fSim = FreqComp.compare(query, dbs[i]);
@@ -106,7 +114,7 @@ public class SearchEngine {
 			// TODO: given specific portion
 			// total sim
 			double sim = 0;
-			// proportion
+			// proportion: color proportion, freq proportion
 			double cpp = 0, fpp = 0;
 			if (fSim == 0) {
 				cpp = 1;
@@ -117,8 +125,14 @@ public class SearchEngine {
 			// compute weighted sim
 			sim = cpp * cSim + fpp * fSim;
 			
+			// record ranking
 			RankInfo ri = new RankInfo(dbs[i].getPath(), sim);
 			q.offer(ri);
+			
+			// make the plot
+			// TODO: combine or not ?
+//			double[] simData = null;
+			setPlot(dbVideos[i], cSimData);
 		}
 		
 		// output result
@@ -128,6 +142,11 @@ public class SearchEngine {
 			res[i] = q.poll().toStringArr();
 			i++;
 		}
+		
+		// comparing finished:
+		System.out.println(query.getName() + " search finished:\nBest match: " 
+							+ Video.getName(res[0][0]) + " " + res[0][1] + 
+							"\n==========================================");
 		
 		return res;
 	}
@@ -140,5 +159,29 @@ public class SearchEngine {
 		String[] folders = f.list();
 		
 		return folders;
+	}
+
+	public Map<String, BufferedImage> getPlots() {
+		return plots;
+	}
+
+	/**
+	 * @param sim similarity of each frame
+	 * @param name video name
+	 */
+	private void setPlot(String name, double[] sim) {
+		int w = plotWidth, h = plotHeight;
+		BufferedImage pt = null;
+		if (w != 0 && h != 0) {
+			pt = Plot.draw(sim, w, h);
+		} else {
+			pt = Plot.draw(sim);
+		}
+		plots.put(name, pt);
+	}
+	
+	public void setPlotSize(int plotWidth, int plotHeight) {
+		this.plotWidth = plotWidth;
+		this.plotHeight = plotHeight;
 	}
 }
