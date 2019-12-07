@@ -19,7 +19,7 @@ public class VideoConst {
 	public static final int QUERY_FRAMES = 150;
 	public static final int DB_FRAMES = 600; 
 	/** frame read step */
-	public static final int STEP = 5;
+	public static final int STEP = 3;
 	/** k means */
 	public static final int K = 6;
 }
