@@ -56,12 +56,6 @@
 			<version>1.3.9</version>
 		</dependency>
 
-		<dependency>
-			<artifactId>video-processing</artifactId>
-			<groupId>org.openimaj</groupId>
-			<version>1.3.9</version>
-			<scope>compile</scope>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.openimaj/core -->
 		<dependency>
 			<groupId>org.openimaj</groupId>
@@ -74,6 +68,13 @@
 			<artifactId>audio-processing</artifactId>
 			<version>1.3.9</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.openimaj.content/visualisations -->
+		<dependency>
+		    <groupId>org.openimaj.content</groupId>
+		    <artifactId>visualisations</artifactId>
+		    <version>1.3.9</version>
+		</dependency>
+		
 
 
 
