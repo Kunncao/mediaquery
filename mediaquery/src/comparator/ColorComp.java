@@ -14,7 +14,25 @@ public class ColorComp {
 	 * @return similarity
 	 */
 	public static double compare(Video v1, Video v2) {
+		int len = Math.abs(v1.length() - v2.length()) + 1;
+		double[] simData = new double[len];
+		return compare(v1, v2, simData);
+	}
+	
+	/**
+	 * compare two videos
+	 * @param sim record the similarity of each compare
+	 * @return similarity
+	 */
+	public static double compare(Video v1, Video v2, double[] simData) {
+		// comparing starts
+		System.out.println("Start color comparing: " + v1.getName() + " and " + v2.getName());
+		
+		// max sim
 		double sim = 0;
+		// max sim clip in db video
+		int maxIndex = 0;
+		
 		// query video, db video
 		Video q, db;
 		// query video total frames, db video total frames
@@ -41,8 +59,19 @@ public class ColorComp {
 			for (int j = 0; j < qLen; j++) {
 				curr += frameCompare(qColors.get(j), dbColors.get(i + j)) / qLen;
 			}
-			sim = Math.max(curr, sim);
+			// record similarity
+			simData[i] = curr;
+			// update max similarity
+			if (curr > sim) {
+				sim = curr;
+				maxIndex = i;
+			}
 		}
+		
+		// comparing finish
+		System.out.println("Result:\nMax similarity: " + sim + ", from " + maxIndex * db.getStep() + " to " + 
+							(maxIndex * db.getStep() + qLen * q.getStep() - 1) + " frame");
+		System.out.println();
 		
 		return sim;
 	}
