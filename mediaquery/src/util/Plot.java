@@ -11,24 +11,22 @@ public class Plot {
 	/**
 	 * draw a plot with given similarity array
 	 * @param sim each two frames similarity between query clip and db video 
-	 * @param step read step
 	 * @return plot histogram image
 	 */
-	public static BufferedImage draw(double[] sim, int step) {
-		int w = sim.length * step, h = RANGE_H;
-		return draw(sim, step, w, h);
+	public static BufferedImage draw(double[] sim) {
+		int w = sim.length, h = RANGE_H;
+		return draw(sim, w, h);
 	}
 	
 	/**
 	 * draw a plot with given similarity array
 	 * @param sim each two frames similarity between query clip and db video 
-	 * @param step read step 
 	 * @param w plot width
 	 * @param h plot height
 	 * @return plot image
 	 */
-	public static BufferedImage draw(double[] sim, int step, int w, int h) {
-		byte[][][] data = formMat(sim, step);
+	public static BufferedImage draw(double[] sim, int w, int h) {
+		byte[][][] data = formMat(sim);
 		
 		int srcH = data.length, srcW = data[0].length;
 		if (w != srcW || h != srcH) {
@@ -49,27 +47,22 @@ public class Plot {
 	/**
 	 * form a histogram data matrix
 	 * @param sim each two frames similarity between query clip and db video 
-	 * @param step read step
 	 */
-	public static byte[][][] formMat(double[] sim, int step) {
-		int h = RANGE_H, w = sim.length * step;
+	public static byte[][][] formMat(double[] sim) {
+		int h = RANGE_H, w = sim.length;
 		byte[][][] mat = new byte[h][w][3];
 		
-		// sim arr index
-		int i = 0;
 		// x axis
-		for (int x = 0; x < w; x += step, i++) {
+		for (int x = 0; x < w; x++) {
 			for (int y = h - 1; y >= 0; y--) {
 				// y axis, oY starts from 1 to 100
 				int oY = h - y;
-				for (int j = 0; j < step; j++) {
-					if (oY <= sim[i] * 100) {
-						// fill the pixel with red
-						mat[y][x + j][0] = (byte) 0xff;
-						// others set 0
-						mat[y][x + j][1] = 0;
-						mat[y][x + j][2] = 0;
-					}
+				if (oY <= sim[x] * 100) {
+					// fill the pixel with red
+					mat[y][x][0] = (byte) 0xff;
+					// others set 0
+					mat[y][x][1] = 0;
+					mat[y][x][2] = 0;
 				}
 			}
 		}
