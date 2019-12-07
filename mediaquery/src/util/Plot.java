@@ -16,7 +16,7 @@ public class Plot {
 	 * @return plot histogram image
 	 */
 	public static BufferedImage draw(double[] sim) {
-		int w = sim.length, h = RANGE_H + EMPTY_SPC;
+		int w = sim.length * 2, h = 100;
 		return draw(sim, w, h);
 	}
 	
