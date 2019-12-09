@@ -1,5 +1,8 @@
 package dataaccess.descriptor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.openimaj.audio.AudioStream;
 import org.openimaj.audio.SampleChunk;
 import org.openimaj.audio.analysis.EffectiveSoundPressure;
@@ -15,23 +18,20 @@ public class AudioDes {
 	 * @return effective sound pressure
 	 * @throws Exception 
 	 */
-	public static double getEffectiveSoundPressure(AudioStream as) throws Exception {
-		// average RMS for each chunk
-		double soundPressure = 0;
+	public static List<Double> getEffectiveSoundPressure(AudioStream as) {
+		// RMS for each chunk
+		List<Double> rmsList = new ArrayList<>();
 		// set the time length of the window and overlap
 		int windowSizeMillis = (int) (nFrameAvg * 1.0 / VideoConst.FPS * 1000), overlapMillis = 0;
-		double RMS = 0;
 		
 		EffectiveSoundPressure esp = new EffectiveSoundPressure(as, windowSizeMillis, overlapMillis);
 		@SuppressWarnings("unused")
 		SampleChunk sc = null;
-		int i = 0;
 		while ((sc = esp.nextSampleChunk()) != null) {
-			RMS += esp.getEffectiveSoundPressure() / 20d;
-			i++;
+			double rms = esp.getEffectiveSoundPressure() / 20d;
+			rmsList.add(rms);
 		}
 
-		soundPressure = RMS / i;
-		return soundPressure;
+		return rmsList;
 	}
 }
