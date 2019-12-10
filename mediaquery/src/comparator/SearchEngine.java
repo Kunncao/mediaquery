@@ -107,14 +107,13 @@ public class SearchEngine {
 			int len = Math.abs(query.length() - dbs[i].length()) + 1;
 			double[] cSimData = new double[len];
 			double cSim = ColorComp.compare(query, dbs[i], cSimData);
-			// TODO: compare others
 			// compare frequency
 			double fSim = FreqComp.compare(query, dbs[i]);
 			
 			// compare sound
 			double sSim = AudioComp.compare(query, dbs[i]);
 			
-			// TODO: given specific portion
+			// given specific portion
 			// total sim
 			double sim = 0;
 			// proportion: color proportion, freq proportion
@@ -122,26 +121,24 @@ public class SearchEngine {
 			if (fSim == 0 && sSim == 0) {
 				cpp = 1;
 			} else if (sSim == 0){
-				cpp = 0.7;
-				fpp = 0.3;
+				cpp = 0.85;
+				fpp = 0.15;
 			} else if (fSim == 0) {
-				cpp = 0.8;
-				fpp = 0.2;
+				cpp = 0.85;
+				spp = 0.15;
 			} else {
-				cpp = 0.6;
-				fpp = 0.2;
-				spp = 0.2;
+				cpp = 0.8;
+				fpp = 0.1;
+				spp = 0.1;
 			}
 			// compute weighted sim
-			sim = cpp * cSim + fpp + spp;
+			sim = cpp * cSim + fpp * fSim + spp;
 			
 			// record ranking
 			RankInfo ri = new RankInfo(dbs[i].getPath(), sim);
 			q.offer(ri);
 			
 			// make the plot
-			// TODO: combine or not ?
-//			double[] simData = null;
 			setPlot(dbVideos[i], cSimData);
 		}
 		
