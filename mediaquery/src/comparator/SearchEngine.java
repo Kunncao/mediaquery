@@ -111,16 +111,26 @@ public class SearchEngine {
 			// compare frequency
 			double fSim = FreqComp.compare(query, dbs[i]);
 			
+			// compare sound
+			double sSim = AudioComp.compare(qSound, dbSound);
+			
 			// TODO: given specific portion
 			// total sim
 			double sim = 0;
 			// proportion: color proportion, freq proportion
-			double cpp = 0, fpp = 0;
-			if (fSim == 0) {
+			double cpp = 0, fpp = 0, spp = 0;
+			if (fSim == 0 && sSim == 0) {
 				cpp = 1;
-			} else {
+			} else if (sSim == 0){
 				cpp = 0.7;
 				fpp = 0.3;
+			} else if (fSim == 0) {
+				cpp = 0.8;
+				fpp = 0.2;
+			} else {
+				cpp = 0.6;
+				fpp = 0.3;
+				spp = 0.1;
 			}
 			// compute weighted sim
 			sim = cpp * cSim + fpp * fSim;
