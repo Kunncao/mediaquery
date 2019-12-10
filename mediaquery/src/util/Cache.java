@@ -35,6 +35,7 @@ public class Cache {
 		int vHeight = v.getHeight();
 		List<String> vFingerprint = v.getFingerprint();
 		List<Map<Color, Double>> vMainColors = v.getMainColors();
+		List<Double> vRmsList = v.getRmsList();
 		
 		// fill json obj
 		JSONObject jo = new JSONObject();
@@ -64,6 +65,10 @@ public class Cache {
 			arrMC.add(jMap);
 		}
 		jo.put("mainColors", arrMC);
+		// sound
+		JSONArray rmsArr = new JSONArray();
+		rmsArr.addAll(vRmsList);
+		jo.put("rmsList", rmsArr);
 		
 		// write
 		String output = folder + v.getName() + ".json";
@@ -103,10 +108,18 @@ public class Cache {
 			}
 			mainColors.add(map);
 		}
-				
+		
+		// sound
+		JSONArray rmsArr = (JSONArray) jo.get("rmsList");
+		List<Double> rmsList = new ArrayList<>();
+		for (Object rms : rmsArr) {
+			rmsList.add((double) rms);
+		}
+		
 		Video v = new Video(path, length, step, w, h);
 		v.setFingerprint(fingerprint);
 		v.setMainColors(mainColors);
+		v.setRmsList(rmsList);
 		
 		return v;
 		
