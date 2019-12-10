@@ -13,6 +13,8 @@ public class Video {
 	/** 64 chars frequence feature for each read frame */
 	private List<String> fingerprint;
 	private List<Map<Color, Double>> mainColors;
+	// the rms of each sample chunk
+	private List<Double> rmsList;
 	private int width = VideoConst.WIDTH, height = VideoConst.HEIGHT;
 	/** reading step */
 	private int step;
@@ -69,6 +71,14 @@ public class Video {
 	
 	public List<String> getFingerprint() {
 		return fingerprint;
+	}
+
+	public List<Double> getRmsList() {
+		return rmsList;
+	}
+
+	public void setRmsList(List<Double> rmsList) {
+		this.rmsList = rmsList;
 	}
 
 	public int getWidth() {
