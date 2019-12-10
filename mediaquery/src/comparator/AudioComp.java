@@ -2,7 +2,17 @@ package comparator;
 
 import java.util.List;
 
+import model.Video;
+
 public class AudioComp {
+	/**
+	 * @param query query video obj
+	 * @param db db video obj
+	 */
+	public static double compare(Video query, Video db) {
+		return compare(query.getRmsList(), db.getRmsList());
+	}
+	
 	/**
 	 * @param qSound rms chunk list of query sound
 	 * @param dbSound rms chunk list of query sound
