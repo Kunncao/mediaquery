@@ -21,6 +21,8 @@ public class AudioComp {
 			d = Math.min(d, curr / qSound.size());
 		}
 		
+		if(!isSim(d)) return 0;
+		
 		return d;
 	}
 	
