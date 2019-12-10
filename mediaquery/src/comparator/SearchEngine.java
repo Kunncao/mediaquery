@@ -112,7 +112,7 @@ public class SearchEngine {
 			double fSim = FreqComp.compare(query, dbs[i]);
 			
 			// compare sound
-			double sSim = AudioComp.compare(qSound, dbSound);
+			double sSim = AudioComp.compare(query, dbs[i]);
 			
 			// TODO: given specific portion
 			// total sim
@@ -129,11 +129,11 @@ public class SearchEngine {
 				fpp = 0.2;
 			} else {
 				cpp = 0.6;
-				fpp = 0.3;
-				spp = 0.1;
+				fpp = 0.2;
+				spp = 0.2;
 			}
 			// compute weighted sim
-			sim = cpp * cSim + fpp * fSim;
+			sim = cpp * cSim + fpp + spp;
 			
 			// record ranking
 			RankInfo ri = new RankInfo(dbs[i].getPath(), sim);
