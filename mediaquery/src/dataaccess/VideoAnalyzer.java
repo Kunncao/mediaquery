@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.opencv.core.Mat;
+import org.openimaj.video.xuggle.XuggleAudio;
 
+import dataaccess.descriptor.AudioDes;
 import dataaccess.descriptor.ColorDes;
 import dataaccess.descriptor.FreqDes;
 import model.Video;
@@ -51,6 +53,8 @@ public class VideoAnalyzer {
 		// color and freq
 		List<Map<Color, Double>> mainColors = new ArrayList<>();
 		List<String> fingerprint = new ArrayList<String>();
+		// sound
+		List<Double> rmsList = new ArrayList<>();
 		ColorDes cd = new ColorDes(k);
 		for (int i = 0; i < frames.length; i++) {
 			Mat mat = ImageProc.rgb2mat(frames[i]);
@@ -60,8 +64,15 @@ public class VideoAnalyzer {
 			fingerprint.add(FreqDes.pHash(frames[i]));
 		}
 		
+		// sound
+		if (!path.endsWith("/")) path += "/";
+		XuggleAudio xa = AudioReader.readAudio(path + Video.getName(path) + ".wav");
+		rmsList = AudioDes.getEffectiveSoundPressure(xa);
+		
+		// set the corresponding value
 		v.setMainColors(mainColors);
 		v.setFingerprint(fingerprint);
+		v.setRmsList(rmsList);
 		
 		return v;
 	}
