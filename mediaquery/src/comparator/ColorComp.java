@@ -26,7 +26,7 @@ public class ColorComp {
 	 */
 	public static double compare(Video v1, Video v2, double[] simData) {
 		// comparing starts
-		System.out.println("Start color comparing: " + v1.getName() + " and " + v2.getName());
+		System.out.println("Start comparing: " + v1.getName() + " and " + v2.getName());
 		
 		// max sim
 		double sim = 0;
