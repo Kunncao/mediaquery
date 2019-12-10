@@ -8,7 +8,7 @@ public class AudioComp {
 	 * @param dbSound rms chunk list of query sound
 	 * @return difference of RMS
 	 */
-	public static double compare(List<Double> qSound, List<Double> dbSound) {
+	public static boolean compare(List<Double> qSound, List<Double> dbSound) {
 		double d = Double.MAX_VALUE;
 		int move = dbSound.size() - qSound.size();
 		
@@ -18,9 +18,18 @@ public class AudioComp {
 			for (int j = 0; j < qSound.size(); j++) {
 				curr += Math.abs(dbSound.get(i + j) - qSound.get(j));
 			}
-			d = Math.min(d, curr);
+			d = Math.min(d, curr / qSound.size());
 		}
 		
-		return d;
+		return isSim(d);
+	}
+	
+	/**
+	 * @param diff sound similarity
+	 */
+	public static boolean isSim(double diff) {
+		int threshold = 50;
+		if (diff > threshold) return false;
+		else return true;
 	}
 }
