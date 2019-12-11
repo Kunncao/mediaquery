@@ -504,7 +504,8 @@ public class UI extends Frame implements ActionListener{
 	    //currentFrameNum = 0;
 	    //totalFrameNum = imagesQuery.size();
 	    //displayScreenShot();
-	    fullNameAudio= fileFolder+ "/" + queryFieldText + "/" + queryFieldText + ".wav";
+	    String[] text=queryFieldText.split("[/]");
+	    fullNameAudio= "query/" + queryFieldText + "/" + text[text.length-1] + ".wav";
 	    try {
 			audioQuery=new PlayWaveFile(fullNameAudio);
 		} catch (UnsupportedAudioFileException e) {
