@@ -20,7 +20,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import javax.sound.sampled.LineUnavailableException;
@@ -41,13 +40,10 @@ import javax.swing.ScrollPaneConstants;
 import org.json.simple.parser.ParseException;
 
 import com.ibm.icu.text.DecimalFormat;
-import com.lowagie.text.Image;
 
 import cern.colt.Arrays;
 import comparator.SearchEngine;
-import dataaccess.ImageDisplay;
 import dataaccess.VideoAnalyzer;
-import model.Video;
 import util.VideoConst;
  
 
@@ -133,7 +129,7 @@ public class UI extends Frame implements ActionListener{
 		scroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		list.setBorder(BorderFactory.createTitledBorder("Matched Videos:")); 
-		list.setVisibleRowCount(10);//Éè¶¨ÏÔÊ¾µÄÐÐÊý
+		list.setVisibleRowCount(10);//ï¿½è¶¨ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		//set width
 		Dimension d = list.getPreferredSize();
 		d.width =200;
