@@ -33,4 +33,3 @@ mediaquery/test/
 # img and sound file
 *.rgb
 *.wav
-mediaquery/src/dataaccess/ImageDisplay.java
