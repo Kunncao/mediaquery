@@ -23,9 +23,9 @@ public class start {
 	    StringBuilder reverseS = new StringBuilder(fileFolder).reverse();
 		String filename = fileFolder.substring(fileFolder.length()-reverseS.toString().indexOf('/'), fileFolder.length());
 		try {
-		    	  String fullName = fileFolder + "/" + filename + "001.rgb";
-		    	  fullNameAudio= fileFolder + "/" + filename + ".wav";
-		    	  
+		    	  //String fullName = fileFolder + "/" + filename + "001.rgb";
+		    	  //fullNameAudio= fileFolder + "/" + filename + ".wav";
+			String fullName ="first001.rgb";
 		    	  File file = new File(fullName);
 		    	  InputStream is = new FileInputStream(file);
 

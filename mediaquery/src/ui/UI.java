@@ -24,6 +24,7 @@ import java.util.Map;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -37,6 +38,8 @@ import javax.swing.ScrollPaneConstants;
 
 import org.json.simple.parser.ParseException;
 
+import com.ibm.icu.text.DecimalFormat;
+
 import cern.colt.Arrays;
 import comparator.SearchEngine;
 import dataaccess.ImageDisplay;
@@ -47,14 +50,14 @@ import util.VideoConst;
 public class UI extends Frame implements ActionListener{
 	
 	private SearchEngine se=new SearchEngine(VideoConst.DB_PATH);
-	
+	public Map<String, BufferedImage> plots; 
 	static final int WIDTH = 352;
     static final int HEIGHT = 288;
     
 	private String fileFolder="query";
 	private String fullNameAudio;
     public ArrayList<BufferedImage> imagesQuery= new ArrayList<BufferedImage>(); 
-    private int totalFrameNumQuery=150;
+    private int totalFrameNumQuery;
     private int playStatus = 3;//1 for play, 2 for pause, 3 for stop
 	
     String queryFieldText;
@@ -65,17 +68,20 @@ public class UI extends Frame implements ActionListener{
     private Thread audioThread;
     private Thread audioDBThread;
     
-    
+    public  ImageIcon imgsvisual;;
     
     private JSlider slider;
-    
+    private JList list;
+    private  DefaultListModel listModel;
     private JTextField queryField;
     private JButton loadButton;
     private JButton searchButton;
     public JLabel videoStartJLable;
+    public JLabel diagram;
+    
     
     private ArrayList<BufferedImage> imagesResult= new ArrayList<BufferedImage>();
-    private int DBtotalFrameNumQuery=150;
+    private int DBtotalFrameNumQuery;
     public JLabel videoEndJLable;
     private PlayWaveFile DBaudioQuery;
     private Thread DBplayingThread;
@@ -83,6 +89,9 @@ public class UI extends Frame implements ActionListener{
     private int DBcurrentFrameNum = 0;
     private int DBplayStatus = 3;
     private int DBsliderstatus=0;
+    
+    private String DBloadfile;
+    private String  DBfullNameAudio;
     int threadvalue;
     float DBpercent=0;
 	public void showUI() {
@@ -110,14 +119,17 @@ public class UI extends Frame implements ActionListener{
 		row1col1.add(searchButton);	
 //row1col2 
 		//Jlist https://blog.csdn.net/leafinsnowfield/article/details/47400717
-		String [] listEntries ={"Flower.rgb 90%","car.rgb 90%","gamma.rgb 90%","delta.rgb 90%","epslion.rgb 90%","zeta.rgb 90%","eta.rgb 90%","theta.rgb 90%"};
-		JList list = new JList(listEntries);  
+		//String [] listEntries ={"Flower.rgb 90%","car.rgb 90%","gamma.rgb 90%","delta.rgb 90%","epslion.rgb 90%","zeta.rgb 90%","eta.rgb 90%","theta.rgb 90%"};
+		listModel = new DefaultListModel();
+		listModel.addElement("element");
+		listModel.addElement("item 2");
+		list = new JList(listModel);  
 		JScrollPane scroller=new JScrollPane(list);
 		
 		scroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		list.setBorder(BorderFactory.createTitledBorder("Matched Videos:")); 
-		list.setVisibleRowCount(4);//设定显示的行数
+		list.setVisibleRowCount(7);//设定显示的行数
 		//set width
 		Dimension d = list.getPreferredSize();
 		d.width =200;
@@ -139,7 +151,16 @@ public class UI extends Frame implements ActionListener{
 	    gbc.gridwidth=GridBagConstraints.REMAINDER;
 	    gb.setConstraints(load,gbc);
 	    row1col2.add(load);
+ //visual diagram   
+	    	//imgsvisual=null;
+	     
+	     ImageIcon  imgsvisual = new ImageIcon();
+	     diagram=new JLabel(imgsvisual);
 	    
+	     //gbc.gridwidth=GridBagConstraints.REMAINDER;
+	     //gb.setConstraints(diagram,gbc);
+	     row1col2.add(diagram);
+	     row1col2.setBackground(Color.white);
 	    
 //JSlider
 	    slider = new JSlider(JSlider.HORIZONTAL,0,100,0);
@@ -236,6 +257,13 @@ public class UI extends Frame implements ActionListener{
 		loadButton.addActionListener(new java.awt.event.ActionListener() {
 			  public void actionPerformed(ActionEvent event) {
 				 	queryFieldText=queryField.getText();
+				 	
+				 	int count = 0;
+				 	String countpath="query/"+queryFieldText;
+			        for( File file: new File(countpath).listFiles( ) ) {
+			            if( file.isFile( ) ) ++count;}
+			        System.out.println("count   "+count);
+			        totalFrameNumQuery=count-1;
 				 	loadVideo();
 				  }
 				});	
@@ -252,12 +280,33 @@ public class UI extends Frame implements ActionListener{
 						videoNames.add(Video.getName(res[i][0]));
 					}
 					
-					Map<String, BufferedImage> plots = se.getPlots();//map
-					
+					//Map<String, BufferedImage> plots = se.getPlots();//map
+					plots = se.getPlots();
+					listModel.removeAllElements();
 					for (String vName : videoNames) {
 						BufferedImage bi = plots.get(vName);
 						ImageDisplay id = new ImageDisplay(bi);
 						id.showImg(vName);
+						
+						;
+					}
+					
+					for (int i=0;i<7;i++) {
+						String path=res [i][0];
+						String data=res [i][1];
+							//listModel.addElement(aa+bb);
+							//System.out.println("aa"+aa);
+						DecimalFormat df = new DecimalFormat("00%");
+						String [] name=path.split("[/]");	 
+						int n=20-name[1].length();
+						System.out.println("n"+n);
+						String item=name[1]+".rgb";
+						for (int j=0;j<n;j++) {
+							item+="  ";
+						}
+						item=item+df.format(Float.parseFloat(data));
+						//format(format,item, df.format(Float.parseFloat(data)));
+						listModel.addElement(item);
 					}
 					
 				} catch (IOException | ParseException e) {
@@ -309,7 +358,21 @@ public class UI extends Frame implements ActionListener{
 			  public void actionPerformed(ActionEvent event) {
 				 	queryFieldText=queryField.getText();
 				 	currentFrameNum=0;
+				 	//System.out.println("list.getSelectedValue()---"+list.getSelectedValue());
+				 	String path=list.getSelectedValue().toString();
+				 	String []aa=path.split("[.]");
+				 	//System.out.println("aa[0]---"+aa[0]);
+				 	DBloadfile=aa[0];
+				 	int count = 0;
+				 	String countpath="database_videos/"+aa[0];
+			        for( File file: new File(countpath).listFiles( ) ) {
+			            if( file.isFile( ) ) ++count;}
+			        System.out.println("count   "+count);
+			        DBtotalFrameNumQuery=count-1;
 				 	loadDBVideo();
+				 	
+				 	diagram.setIcon(new ImageIcon(plots.get(aa[0])));
+				 	
 				  }
 				});	
 		playButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -440,11 +503,11 @@ public class UI extends Frame implements ActionListener{
 	
 	private void loadDBVideo() {
 		//System.out.println(queryFieldText);
-		 
 	    try {
-	      if(queryFieldText == null || queryFieldText.isEmpty()){
-	    	  return;
-	      }
+		      if(DBloadfile == null || DBloadfile.isEmpty()){
+		    	  return;
+		      }
+ 
 	     // imagesQuery = new ArrayList<BufferedImage>();
 	      imagesResult.clear();
 	      
@@ -455,10 +518,10 @@ public class UI extends Frame implements ActionListener{
 	    	  } else if(i > 99) {
 	    		  fileNum = "";
 	    	  }
-	    	  String fullName = fileFolder + "/" + queryFieldText + "/" + queryFieldText  +fileNum + new Integer(i).toString() + ".rgb";
+	    	  String DBfullName = "database_videos" + "/" + DBloadfile + "/" + DBloadfile  +fileNum + new Integer(i).toString() + ".rgb";
 	    	  //String audioFilename = fileFolder + "/" + pathTitle + "/" + pathTitle + ".wav";
 	    	  //System.out.println(fullName);
-	    	  File file = new File(fullName);
+	    	  File file = new File(DBfullName);
 	    	  InputStream is = new FileInputStream(file);
 
 	   	      long len = file.length();
@@ -501,9 +564,9 @@ public class UI extends Frame implements ActionListener{
 	    //currentFrameNum = 0;
 	    //totalFrameNum = imagesQuery.size();
 	    //displayScreenShot();
-	    fullNameAudio= fileFolder+ "/" + queryFieldText + "/" + queryFieldText + ".wav";
+	    DBfullNameAudio= "database_videos"+ "/" + DBloadfile + "/" + DBloadfile + ".wav";
 	    try {
-	    	DBaudioQuery=new PlayWaveFile(fullNameAudio);
+	    	DBaudioQuery=new PlayWaveFile(DBfullNameAudio);
 		} catch (UnsupportedAudioFileException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
