@@ -28,6 +28,7 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -253,6 +254,7 @@ public class UI extends Frame implements ActionListener{
 	    window.setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
 	    window.setBackground(Color.white);
 	    add(window);
+	    setTitle("Group 26/Yizheng Guo & Jianfei Cao");
 	    addWindowListener(new MyListener());
 //addlistener	    
 		loadButton.addActionListener(new java.awt.event.ActionListener() {
