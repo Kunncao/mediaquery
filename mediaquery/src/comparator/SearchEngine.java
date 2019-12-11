@@ -124,8 +124,8 @@ public class SearchEngine {
 				cpp = 0.85;
 				fpp = 0.15;
 			} else if (fSim == 0) {
-				cpp = 0.85;
-				spp = 0.15;
+				cpp = 0.90;
+				spp = 0.10;
 			} else {
 				cpp = 0.8;
 				fpp = 0.1;
