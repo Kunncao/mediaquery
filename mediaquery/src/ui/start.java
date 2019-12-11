@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import org.opencv.core.Core;
+
+import dataaccess.VideoAnalyzer;
  
 public class start {
 	
@@ -62,7 +64,11 @@ public class start {
 		
 		
 		
-		
+		 try{String[] fileName=VideoAnalyzer.getFPath("query/first");
+		 System.out.println("fileName[0]"+fileName[0]);
+		 System.out.println("fileName[1]"+fileName[1]);
+		 System.out.println("fileName[2]"+fileName[2]);}
+		 catch(Exception e) {}
 	 
 		
 		UI ui = new UI(images);

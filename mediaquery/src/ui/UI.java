@@ -3,9 +3,11 @@ import java.awt.Button;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -39,10 +41,12 @@ import javax.swing.ScrollPaneConstants;
 import org.json.simple.parser.ParseException;
 
 import com.ibm.icu.text.DecimalFormat;
+import com.lowagie.text.Image;
 
 import cern.colt.Arrays;
 import comparator.SearchEngine;
 import dataaccess.ImageDisplay;
+import dataaccess.VideoAnalyzer;
 import model.Video;
 import util.VideoConst;
  
@@ -121,15 +125,15 @@ public class UI extends Frame implements ActionListener{
 		//Jlist https://blog.csdn.net/leafinsnowfield/article/details/47400717
 		//String [] listEntries ={"Flower.rgb 90%","car.rgb 90%","gamma.rgb 90%","delta.rgb 90%","epslion.rgb 90%","zeta.rgb 90%","eta.rgb 90%","theta.rgb 90%"};
 		listModel = new DefaultListModel();
-		listModel.addElement("element");
-		listModel.addElement("item 2");
+//		listModel.addElement("element");
+//		listModel.addElement("item 2");
 		list = new JList(listModel);  
 		JScrollPane scroller=new JScrollPane(list);
 		
 		scroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		list.setBorder(BorderFactory.createTitledBorder("Matched Videos:")); 
-		list.setVisibleRowCount(7);//设定显示的行数
+		list.setVisibleRowCount(10);//设定显示的行数
 		//set width
 		Dimension d = list.getPreferredSize();
 		d.width =200;
@@ -153,12 +157,13 @@ public class UI extends Frame implements ActionListener{
 	    row1col2.add(load);
  //visual diagram   
 	    	//imgsvisual=null;
-	     
-	     ImageIcon  imgsvisual = new ImageIcon();
+	     BufferedImage res = new BufferedImage(400, 50, BufferedImage.TYPE_INT_RGB);
+
+	     ImageIcon  imgsvisual = new ImageIcon(res);
 	     diagram=new JLabel(imgsvisual);
 	    
-	     //gbc.gridwidth=GridBagConstraints.REMAINDER;
-	     //gb.setConstraints(diagram,gbc);
+	     gbc.gridwidth=GridBagConstraints.REMAINDER;
+	     gb.setConstraints(diagram,gbc);
 	     row1col2.add(diagram);
 	     row1col2.setBackground(Color.white);
 	    
@@ -263,7 +268,7 @@ public class UI extends Frame implements ActionListener{
 			        for( File file: new File(countpath).listFiles( ) ) {
 			            if( file.isFile( ) ) ++count;}
 			        System.out.println("count   "+count);
-			        totalFrameNumQuery=count-1;
+			        totalFrameNumQuery=count-2;
 				 	loadVideo();
 				  }
 				});	
@@ -368,10 +373,16 @@ public class UI extends Frame implements ActionListener{
 			        for( File file: new File(countpath).listFiles( ) ) {
 			            if( file.isFile( ) ) ++count;}
 			        System.out.println("count   "+count);
-			        DBtotalFrameNumQuery=count-1;
+			        DBtotalFrameNumQuery=count-2;
 				 	loadDBVideo();
 				 	
-				 	diagram.setIcon(new ImageIcon(plots.get(aa[0])));
+				 	
+				 	BufferedImage resized = resize(plots.get(aa[0]), 400, 50);
+//				 	BufferedImage thumbnail = Scalr.resize(image, 150);
+//				 	Image image = plots.get(aa[0]) // transform it 
+//				 	Image newimg = plots.get(aa[0]).getScaledInstance(120, 120,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+//				 	imageIcon = new ImageIcon(newimg);  // transform it back
+				 	diagram.setIcon(new ImageIcon(resized));
 				 	
 				  }
 				});	
@@ -423,9 +434,21 @@ public class UI extends Frame implements ActionListener{
 	}
 	
 	
-	private void loadVideo() {
+	private void loadVideo()      {
 		//System.out.println(queryFieldText);
-		 
+		String[] fileName = null;
+		//fileName=null;
+		
+			 
+			 
+				try {
+					fileName=VideoAnalyzer.getFPath("query/"+queryFieldText);
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			
+			  
 	    try {
 	      if(queryFieldText == null || queryFieldText.isEmpty()){
 	    	  return;
@@ -440,7 +463,7 @@ public class UI extends Frame implements ActionListener{
 	    	  } else if(i > 99) {
 	    		  fileNum = "";
 	    	  }
-	    	  String fullName = fileFolder + "/" + queryFieldText + "/" + queryFieldText  +fileNum + new Integer(i).toString() + ".rgb";
+	    	  String fullName = fileName[i];
 	    	  //String audioFilename = fileFolder + "/" + pathTitle + "/" + pathTitle + ".wav";
 	    	  //System.out.println(fullName);
 	    	  File file = new File(fullName);
@@ -507,7 +530,17 @@ public class UI extends Frame implements ActionListener{
 		      if(DBloadfile == null || DBloadfile.isEmpty()){
 		    	  return;
 		      }
- 
+		String[] fileName = null;
+		//fileName=null;
+		
+			 
+			 
+				try {
+					fileName=VideoAnalyzer.getFPath("database_videos/"+DBloadfile);
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 	     // imagesQuery = new ArrayList<BufferedImage>();
 	      imagesResult.clear();
 	      
@@ -518,7 +551,7 @@ public class UI extends Frame implements ActionListener{
 	    	  } else if(i > 99) {
 	    		  fileNum = "";
 	    	  }
-	    	  String DBfullName = "database_videos" + "/" + DBloadfile + "/" + DBloadfile  +fileNum + new Integer(i).toString() + ".rgb";
+	    	  String DBfullName = fileName[i];
 	    	  //String audioFilename = fileFolder + "/" + pathTitle + "/" + pathTitle + ".wav";
 	    	  //System.out.println(fullName);
 	    	  File file = new File(DBfullName);
@@ -714,8 +747,17 @@ public class UI extends Frame implements ActionListener{
 	
 	
 	
-	
-	
+	public static BufferedImage resize(BufferedImage img, int newW, int newH) {  
+	    int w = img.getWidth();  
+	    int h = img.getHeight();  
+	    BufferedImage dimg = new BufferedImage(newW, newH, img.getType());  
+	    Graphics2D g = dimg.createGraphics();  
+	    g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+	    RenderingHints.VALUE_INTERPOLATION_BILINEAR);  
+	    g.drawImage(img, 0, 0, newW, newH, 0, 0, w, h, null);  
+	    g.dispose();  
+	    return dimg;  
+	}  
 	
 	
 	
