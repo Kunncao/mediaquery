@@ -31,6 +31,7 @@ public class start {
 		
 		UI ui = new UI(images);
 		//PlayWaveFile aaaFile=new PlayWaveFile(fullNameAudio);
+		ui.setTitle("Multimedia Queries");
 		ui.showUI();
 		
 
