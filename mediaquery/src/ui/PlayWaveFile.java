@@ -22,7 +22,7 @@ public class PlayWaveFile
     String status; 
       
     AudioInputStream audioInputStream; 
-    static String filePath; 
+     String filePath; 
   
     // constructor to initialize streams and clip 
      

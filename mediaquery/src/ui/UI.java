@@ -279,22 +279,22 @@ public class UI extends Frame implements ActionListener{
 					System.out.println(Arrays.toString(res));
 					
 					// TODO: get video name
-					List<String> videoNames = new ArrayList<>();
-					
-					for (int i = 0; i < res.length; i++) {
-						videoNames.add(Video.getName(res[i][0]));
-					}
+//					List<String> videoNames = new ArrayList<>();
+//					
+//					for (int i = 0; i < res.length; i++) {
+//						videoNames.add(Video.getName(res[i][0]));
+//					}
 					
 					//Map<String, BufferedImage> plots = se.getPlots();//map
 					plots = se.getPlots();
 					listModel.removeAllElements();
-					for (String vName : videoNames) {
-						BufferedImage bi = plots.get(vName);
-						ImageDisplay id = new ImageDisplay(bi);
-						id.showImg(vName);
-						
-						;
-					}
+//					for (String vName : videoNames) {
+//						BufferedImage bi = plots.get(vName);
+//						ImageDisplay id = new ImageDisplay(bi);
+//						id.showImg(vName);
+//						
+//						;
+//					}
 					
 					for (int i=0;i<7;i++) {
 						String path=res [i][0];
@@ -350,7 +350,7 @@ public class UI extends Frame implements ActionListener{
 		
 		playButton3.addActionListener(new java.awt.event.ActionListener() {
 			  public void actionPerformed(ActionEvent event) {
-				    
+				   // if (playStatus==2) {playVideo();}
 				 	stopVideo();
 				 	playStatus = 3;
 				 	try {
@@ -372,7 +372,7 @@ public class UI extends Frame implements ActionListener{
 				 	String countpath="database_videos/"+aa[0];
 			        for( File file: new File(countpath).listFiles( ) ) {
 			            if( file.isFile( ) ) ++count;}
-			        System.out.println("count   "+count);
+			        //System.out.println("count   "+count);
 			        DBtotalFrameNumQuery=count-2;
 				 	loadDBVideo();
 				 	
@@ -616,7 +616,7 @@ public class UI extends Frame implements ActionListener{
 	private void playVideo() {
 		playingThread = new Thread() {
             public void run() {
-	            System.out.println("Start playing video: " + queryFieldText);
+	            //System.out.println("Start playing video: " + queryFieldText);
 	          	for (int i = currentFrameNum; i < totalFrameNumQuery; i++) {
 	          		videoStartJLable.setIcon(new ImageIcon(imagesQuery.get(i)));
 	          	    try {
@@ -637,7 +637,7 @@ public class UI extends Frame implements ActionListener{
 	          		playStatus = 3;
 		            currentFrameNum = 0;
 	          	}
-	            System.out.println("End playing video: " + queryFieldText);
+	           // System.out.println("End playing video: " + queryFieldText);
 	        }
 	    };
 	    
@@ -658,7 +658,7 @@ public class UI extends Frame implements ActionListener{
 	            //System.out.println("Start playing video: " + queryFieldText);
 	          	for (int i = DBcurrentFrameNum; i < DBtotalFrameNumQuery; i++) {
 	          		videoEndJLable.setIcon(new ImageIcon(imagesResult.get(i)));
-	          		System.out.println("iiii==== " + i);
+	          		//System.out.println("iiii==== " + i);
 	          	    try {
 	                  	sleep(1000/30);
 	          	    } catch (InterruptedException e) {
@@ -696,7 +696,7 @@ public class UI extends Frame implements ActionListener{
 	private void pauseVideo() throws InterruptedException {
 		if(playingThread != null) {
 			playingThread.interrupt();
-			//audioThread.interrupt();
+			audioThread.interrupt();  ////////////////////
 			//audioQuery.pause();
 			//playingThread = null;
 			//audioThread = null;
@@ -704,18 +704,25 @@ public class UI extends Frame implements ActionListener{
 	}
 
 	private void stopVideo() {
-		if(playingThread != null) {
-			if(playStatus!=2) {
-			playingThread.interrupt();}
-			//audioThread.interrupt();
-			//playSound.stop();
-			playingThread = null;
-			//audioThread = null;
-			slider.setValue(0);
-		} else {
-			currentFrameNum = 0;
-			videoStartJLable.setIcon(new ImageIcon(imagesQuery.get(0)));
-		}
+		playingThread.interrupt();//}
+		audioThread.interrupt();////////////////////
+		playingThread = null;
+		audioThread = null;//////////////////////
+		currentFrameNum = 0;
+		videoStartJLable.setIcon(new ImageIcon(imagesQuery.get(0)));
+		
+//		if(playingThread != null) {
+//			//if(playStatus!=2) {
+//			playingThread.interrupt();//}
+//			audioThread.interrupt();////////////////////
+//			//playSound.stop();
+//			playingThread = null;
+//			audioThread = null;//////////////////////
+//			//slider.setValue(0);
+//		} else {
+//			currentFrameNum = 0;
+//			videoStartJLable.setIcon(new ImageIcon(imagesQuery.get(0)));
+//		}
 	}
 	
 	private void DBpauseVideo() throws InterruptedException {
@@ -729,18 +736,28 @@ public class UI extends Frame implements ActionListener{
 	}
 
 	private void DBstopVideo() {
-		if(DBplayingThread != null) {
-			if(DBplayStatus!=2) {
-			DBplayingThread.interrupt();}
-			//audioThread.interrupt();
-			//playSound.stop();
-			DBplayingThread = null;
-			//audioThread = null;
-			slider.setValue(0);
-		} else {
-			DBcurrentFrameNum = 0;
-			videoEndJLable.setIcon(new ImageIcon(imagesResult.get(0)));
-		}
+		DBplayingThread.interrupt();
+		DBaudioThread.interrupt();
+	DBplayingThread = null;
+	DBaudioThread = null;
+	slider.setValue(0);
+	DBcurrentFrameNum = 0;
+	videoEndJLable.setIcon(new ImageIcon(imagesResult.get(0)));
+//	
+//		if(DBplayingThread != null) {
+//			if(DBplayStatus!=2) {
+//			DBplayingThread.interrupt();}
+//			//audioThread.interrupt();
+//			//playSound.stop();
+//			DBplayingThread = null;
+//			//audioThread = null;
+//			slider.setValue(0);
+//		} else {
+//			DBcurrentFrameNum = 0;
+//			videoEndJLable.setIcon(new ImageIcon(imagesResult.get(0)));
+//		}
+		
+		
 	}
 	
 	
